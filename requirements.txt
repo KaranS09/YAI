@@ -1,0 +1,19 @@
+# ---------------------------------------------------------------------------
+# AI Model Portfolio Manager — pinned dependencies (verified on Python 3.9.6)
+# Install with:  pip install -r requirements.txt
+# ---------------------------------------------------------------------------
+
+# Core pipeline (LangGraph orchestration + LLM calls)
+langgraph==0.6.11
+litellm==1.83.9
+python-dotenv==1.0.1
+tiktoken==0.12.0
+
+# Decision layer — offline semantic intent + difficulty scoring
+fastembed==0.7.4
+semantic-router==0.0.72   # IMPORTANT: on Python 3.9 this MUST be 0.0.72 (0.1.x needs Python 3.10+)
+numpy==1.26.4
+
+# UI server (FastAPI + SSE streaming)
+fastapi==0.128.8
+uvicorn[standard]==0.39.0
