@@ -85,22 +85,27 @@ _INTENT_ROUTES = {
                     "requires": set()},
 }
 
-# Soft per-layer quality floors. A FLOOR, not a mapping — difficulty can push
-# higher, and any qualifying provider can win. Kept gentle on purpose so the
-# request (not the layer) drives the choice. Tunable; the learning loop can
-# make these redundant over time.
-_LAYER_QUALITY_FLOOR = {
-    "triage": 0.0,      # pure difficulty-driven
-    "execution": 0.0,   # pure difficulty-driven
-    "planner": 0.45,    # planning benefits from some reasoning capability
-    "qa": 0.55,         # auditing must be reasonably strong
+# Per-step capability PROFILE. Each step has its OWN job, so it gets its own
+# quality bar and capability tags — NOT the query's difficulty applied uniformly.
+# That's why steps pick different models: an easy step (triage/classify) takes a
+# cheap model even on a hard query, while the heavy step (execution) scales up.
+#   floor       : minimum quality this step always needs
+#   diff_weight : how much the query's difficulty raises THIS step's bar
+#   tags        : required capabilities ("intent" = inherit the query's intent tags)
+#   cap         : ceiling on this step's bar (execution may escalate higher)
+#   required_quality = min(floor + diff_weight * difficulty, cap)
+_LAYER_PROFILE = {
+    # Triage just classifies "simple vs complex" — fast + cheap, no special skills.
+    "triage":    {"floor": 0.00, "diff_weight": 0.00, "tags": frozenset(),            "cap": 0.80},
+    # Planning needs to reason about structure — a mid reasoning model.
+    "planner":   {"floor": 0.45, "diff_weight": 0.45, "tags": frozenset({"reasoning"}), "cap": 0.82},
+    # Execution does the actual work — scales strongly with difficulty and uses
+    # the query's own capability tags; can escalate to the strongest model.
+    "execution": {"floor": 0.30, "diff_weight": 0.90, "tags": "intent",               "cap": 0.95},
+    # Review must be reliable — a solid reasoning model (cost-aware, not the priciest).
+    "qa":        {"floor": 0.55, "diff_weight": 0.30, "tags": frozenset({"reasoning"}), "cap": 0.82},
 }
-
-# Cap on the quality bar. Difficulty saturates toward 1.0 on hard prompts, but
-# demanding quality==1.0 excludes every real model and forces the expensive
-# fallback. Capping here means a hard prompt first tries a capable mid-tier
-# model (cheap); QA + the replan cycle escalate if that proves insufficient.
-_MAX_REQUIRED_QUALITY = 0.80
+_DEFAULT_PROFILE = {"floor": 0.0, "diff_weight": 1.0, "tags": "intent", "cap": 0.95}
 
 # Rough per-layer output-token expectation (until Node A supplies real
 # estimates). Input tokens are estimated from the query length. This is what
@@ -212,9 +217,13 @@ class Router:
         instead of ever falling back to mock.
         """
         difficulty = self._difficulty(query)
-        intent, required_tags = self._intent(query)
-        required_quality = max(difficulty, _LAYER_QUALITY_FLOOR.get(layer, 0.0))
-        required_quality = min(required_quality, _MAX_REQUIRED_QUALITY)
+        intent, intent_tags = self._intent(query)
+
+        # Per-step requirement: each layer judges the request against ITS OWN job.
+        prof = _LAYER_PROFILE.get(layer, _DEFAULT_PROFILE)
+        required_tags = set(intent_tags) if prof["tags"] == "intent" else set(prof["tags"])
+        required_quality = min(prof["floor"] + prof["diff_weight"] * difficulty, prof["cap"])
+
         est_in = self._est_input_tokens(query)
         est_out = _LAYER_OUTPUT_TOKENS.get(layer, 500)
 

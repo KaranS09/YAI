@@ -13,12 +13,15 @@ def count_tokens(text: str) -> int:
     return len(_ENC.encode(text)) if _ENC is not None else max(1, len(text) // 4)
 
 
-# Starting guesses. The engine overrides them with learned values once it has history.
+# Starting guesses. The engine overrides them with learned values once it has
+# history. These are deliberately realistic/generous so the cold-start estimate
+# is a sensible CEILING (actual should land at or under it): the QA step in
+# particular reads the entire draft answer, so its input is large.
 LAYER_ASSUMPTIONS = {
-    "triage":   {"overhead": 150, "sees_query": 1.0, "out": 30},
-    "planner":  {"overhead": 250, "sees_query": 1.0, "out": 350},
-    "executor": {"overhead": 200, "sees_query": 1.0, "out": 500},
-    "qa":       {"overhead": 200, "sees_query": 1.5, "out": 40},
+    "triage":   {"overhead": 160, "sees_query": 1.0, "out": 60},
+    "planner":  {"overhead": 300, "sees_query": 1.0, "out": 500},
+    "executor": {"overhead": 400, "sees_query": 1.0, "out": 750},
+    "qa":       {"overhead": 700, "sees_query": 1.0, "out": 150},
 }
 
 

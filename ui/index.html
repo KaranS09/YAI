@@ -265,7 +265,7 @@ function App(){
 
       <div className="cards">
         <CostCard cls="predicted" label="Predicted cost" value={predicted}
-          hint={estModel?(<span>estimated assuming <b>{estModel}</b></span>):"estimated before running"}/>
+          hint={estModel?(<span>worst-case ceiling · assumes <b>{estModel}</b></span>):"pre-flight worst-case ceiling"}/>
         <CostCard cls="actual" label="Actual cost" value={actual}
           hint={execModel?(<span>answered by <b>{execModel}</b></span>):"measured from real usage"}/>
         <CostCard cls="savings" label="Savings vs monolith" value={savings} prefix="" suffix="%" decimals={1}

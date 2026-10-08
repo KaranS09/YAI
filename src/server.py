@@ -105,9 +105,13 @@ def run_stream(prompt: str):
                     d = delta.get("estimate_detail", {})
                     est_plan = d.get("route_plan", {}) or {}
                     est_model = est_plan.get("executor") or est_plan.get("execution")
+                    # Show the WORST-CASE estimate (includes one replan) as the
+                    # predicted cost, so it's a sensible ceiling actual lands under.
+                    predicted = round(d.get("estimated_cost_worst_case")
+                                      or delta.get("estimated_cost", 0.0), 6)
                     yield _sse({
                         "type": "preflight",
-                        "predicted_cost": round(delta.get("estimated_cost", 0.0), 6),
+                        "predicted_cost": predicted,
                         "baseline_cost": round(d.get("baseline_estimate", 0.0), 6),
                         "baseline_model": pretty_model(d.get("baseline_model", "")) or "GPT-4o",
                         "est_model": pretty_model(est_model),
@@ -136,7 +140,9 @@ def run_stream(prompt: str):
 
                 elif node == "post_run":
                     report = delta.get("cost_report", {}) or {}
-                    predicted = round(final_state.get("estimated_cost", 0.0), 6)
+                    _ed = final_state.get("estimate_detail", {}) or {}
+                    predicted = round(_ed.get("estimated_cost_worst_case")
+                                      or final_state.get("estimated_cost", 0.0), 6)
                     actual = round(delta.get("actual_cost", 0.0), 6)
                     base = (report.get("baselines", {}) or {}).get(
                         report.get("baseline_model", ""), 0.0)
