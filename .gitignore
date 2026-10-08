@@ -1,0 +1,55 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+pytest-cache-files-*/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Packaging and build outputs
+*.egg-info/
+.eggs/
+build/
+dist/
+site/
+wheelhouse/
+pip-wheel-metadata/
+
+# Test, debug, and runtime output
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Jupyter/IPython
+.ipynb_checkpoints/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# LangChain/LangSmith local traces
+.langchain/
+.langsmith/
