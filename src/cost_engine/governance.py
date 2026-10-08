@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Governance: budget policies + tamper-evident audit log (hash chain)."""
 import json, os, hashlib
 from datetime import datetime, timezone

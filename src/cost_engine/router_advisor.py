@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Cost-aware route advisor. Enumerates every model combination, prices it, scores quality,
 keeps the cost-vs-quality Pareto frontier, and picks a route for the budget mode.
 P2 can call recommend_route() directly as their router."""
@@ -13,11 +14,12 @@ WEIGHTS = {"triage": 0.1, "planner": 0.2, "executor": 0.5, "qa": 0.2}
 MIN_Q = {"simple":  {"cost-first": 4.5, "balanced": 5.5, "quality-first": 6.5},
          "complex": {"cost-first": 6.0, "balanced": 7.0, "quality-first": 8.0}}
 _COMPLEX_WORDS = ("analyze", "analyse", "compare", "calculate", "cross-reference", "evaluate",
-                  "assess", "summarize", "explain why", "step by step", "risk", "compliance")
+                  "assess", "summarize", "explain why", "step by step", "risk", "compliance",
+                  "design", "plan", "optimize", "architect")
 
 
 def guess_complexity(query: str) -> str:
-    q = query.lower()
+    q = query.lower().replace("-", " ")  # so 'step-by-step' matches 'step by step'
     hits = sum(w in q for w in _COMPLEX_WORDS)
     return "complex" if (len(q) > 300 or (hits >= 1 and len(q) > 120) or hits >= 2) else "simple"
 

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Self-calibration: the engine learns from every run (token sizes, model win-rates,
 estimate accuracy). Stored in history.json next to the code."""
 import json, os

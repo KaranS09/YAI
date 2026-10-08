@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Pricing registry: prices, quality priors, role eligibility."""
 import json, os
 

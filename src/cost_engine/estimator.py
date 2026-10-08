@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Node A: Pre-Flight Estimator + policy gate."""
 import uuid
 from pricing import cost_for, BASELINE_MODEL, BASELINES, normalize_route, to_p2_names

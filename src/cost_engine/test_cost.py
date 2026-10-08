@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Run: python test_cost.py  (no API keys, no teammates needed). Uses a temp data dir."""
 import os, tempfile, json
 os.environ["COST_ENGINE_DATA_DIR"] = tempfile.mkdtemp()   # keep demo data out of the real history

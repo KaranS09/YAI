@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Node F: Post-Run Ledger. True cost of completing the task, waste, savings, audit trail."""
 from collections import Counter, defaultdict
 from pricing import cost_for, BASELINE_MODEL, BASELINES, normalize_ledger

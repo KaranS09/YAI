@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Token counting + per-layer token assumptions (auto-calibrated from history)."""
 from calibration import node_stats
 

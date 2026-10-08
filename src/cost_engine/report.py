@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Plain-text scorecard for terminal demos (the UI can reuse the same dicts later)."""
 
 
