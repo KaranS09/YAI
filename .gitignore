@@ -58,3 +58,5 @@ desktop.ini
 __pycache__/
 src/cost_engine/history.json
 src/cost_engine/audit_log.jsonl
+# Cost engine runtime data (learning history + audit log)
+.cost_engine_data/
