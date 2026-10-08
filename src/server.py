@@ -8,7 +8,7 @@ FastAPI server for the AI Model Portfolio Manager UI.
        savings, final answer).
 
 Run (from the YAI folder):
-    cd YAI && python server.py
+    cd YAI && python src/server.py
 Then open http://127.0.0.1:8000
 """
 
@@ -27,7 +27,8 @@ from fastapi.responses import FileResponse, StreamingResponse
 import portfolio_manager as pm
 from model_catalog import MODEL_CATALOG
 
-_ROOT = os.path.dirname(os.path.abspath(__file__))
+# This file lives in YAI/src/; _ROOT points at the YAI project folder (for ui/).
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_GRAPH = pm.build_graph()
 
 app = FastAPI(title="AI Model Portfolio Manager")

@@ -13,7 +13,7 @@ Brings together three teammate components into one runnable LangGraph:
     run never crashes the demo.
 
 Run (from the YAI folder):
-    cd YAI && python portfolio_manager.py
+    cd YAI && python src/portfolio_manager.py
 """
 
 from __future__ import annotations
@@ -31,15 +31,16 @@ from typing import Annotated, Any, Literal, TypedDict
 #   GEMINI_API_KEY      -> Google / Gemini   (model strings 'gemini/...')
 #   OPENROUTER_API_KEY  -> OpenRouter        (model strings 'openrouter/.../...')
 #   GROQ_API_KEY        -> Groq              (model strings 'groq/...')
-# This file lives in YAI/, so _ROOT is the YAI folder itself.
-_ROOT = os.path.dirname(os.path.abspath(__file__))
-_COST_ENGINE = os.path.join(_ROOT, "src", "cost_engine")
+# This file lives in YAI/src/. _SRC is that folder; _PROJECT is YAI/.
+_SRC = os.path.dirname(os.path.abspath(__file__))
+_PROJECT = os.path.dirname(_SRC)
+_COST_ENGINE = os.path.join(_SRC, "cost_engine")
 sys.path.insert(0, _COST_ENGINE)          # cost engine uses flat imports
 # Keep the engine's learning/audit files tidy under YAI/.
-os.environ.setdefault("COST_ENGINE_DATA_DIR", os.path.join(_ROOT, ".cost_engine_data"))
+os.environ.setdefault("COST_ENGINE_DATA_DIR", os.path.join(_PROJECT, ".cost_engine_data"))
 
-# Load keys from YAI/.env (sits next to this file). Real shell env still wins.
-_ENV_PATH = os.path.join(_ROOT, ".env")
+# Load keys from YAI/.env. Real shell env still wins.
+_ENV_PATH = os.path.join(_PROJECT, ".env")
 try:
     from dotenv import load_dotenv
     load_dotenv(_ENV_PATH)

@@ -8,13 +8,24 @@ Runs several varied prompts through the integrated graph with REAL API calls
   * every layer's model / provider / tokens / cost / LIVE-or-MOCK / attempt
   * QA verdict + replan count
   * savings vs the monolith baseline
+
+Run (from the YAI folder):
+    cd YAI && python tests/live_test.py
 """
 
 from __future__ import annotations
 
 import logging
+import os
+import sys
 
-# Importing portfolio_manager wires sys.path, loads keys, builds everything.
+# This file lives in YAI/tests/ — put YAI/src (and the cost engine) on the path.
+_SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+for _p in (_SRC, os.path.join(_SRC, "cost_engine")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+# Importing portfolio_manager wires the rest of sys.path, loads keys, builds everything.
 from portfolio_manager import build_graph
 from router import ROUTER
 from pricing import cost_for, BASELINE_MODEL  # cost engine (on path via import above)
