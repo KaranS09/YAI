@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "unit": "USD per 1,000,000 tokens",
+    "baseline_model": "gpt-4o",
+    "default_price": {
+      "input_per_1m": 0.5,
+      "output_per_1m": 1.5
+    },
+    "last_updated": "VERIFY-BEFORE-DEMO",
+    "note": "Free models are priced at market-equivalent rates. 'quality' is a 0-10 PRIOR that the engine learns from real QA pass/fail results. Keys must match P2's exact LiteLLM model strings. Prices for apodex / qwen3.8 / nemotron are PLACEHOLDERS: copy the paid-variant price from each model's OpenRouter/Groq page."
+  },
+  "models": {
+    "gpt-4o": {
+      "input_per_1m": 2.5,
+      "output_per_1m": 10.0,
+      "is_free": false,
+      "baseline": true,
+      "quality": 9.0,
+      "roles": []
+    },
+    "anthropic/claude-sonnet-4": {
+      "input_per_1m": 3.0,
+      "output_per_1m": 15.0,
+      "is_free": false,
+      "baseline": true,
+      "quality": 9.5,
+      "roles": []
+    },
+    "gemini/gemini-2.5-pro": {
+      "input_per_1m": 1.25,
+      "output_per_1m": 10.0,
+      "is_free": false,
+      "baseline": true,
+      "quality": 9.5,
+      "roles": []
+    },
+    "gpt-4o-mini": {
+      "input_per_1m": 0.15,
+      "output_per_1m": 0.6,
+      "is_free": false,
+      "baseline": false,
+      "quality": 6.0,
+      "roles": []
+    },
+    "groq/openai/gpt-oss-20b": {
+      "input_per_1m": 0.075,
+      "output_per_1m": 0.3,
+      "is_free": true,
+      "quality": 6.5,
+      "roles": [
+        "triage",
+        "planner",
+        "executor",
+        "qa"
+      ]
+    },
+    "groq/openai/gpt-oss-120b": {
+      "input_per_1m": 0.15,
+      "output_per_1m": 0.6,
+      "is_free": true,
+      "quality": 8.0,
+      "roles": [
+        "planner",
+        "executor",
+        "qa"
+      ]
+    },
+    "openrouter/apodex/apodex-1.1-mini:free": {
+      "input_per_1m": 0.2,
+      "output_per_1m": 0.8,
+      "is_free": true,
+      "quality": 7.0,
+      "roles": [
+        "planner"
+      ]
+    },
+    "groq/qwen/qwen3.8-27b": {
+      "input_per_1m": 0.3,
+      "output_per_1m": 0.6,
+      "is_free": true,
+      "quality": 7.5,
+      "roles": [
+        "executor"
+      ]
+    },
+    "openrouter/nvidia/nemotron-3.5-lightning:free": {
+      "input_per_1m": 0.1,
+      "output_per_1m": 0.4,
+      "is_free": true,
+      "quality": 6.5,
+      "roles": [
+        "triage",
+        "qa"
+      ]
+    }
+  }
+}

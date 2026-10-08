@@ -53,3 +53,8 @@ desktop.ini
 # LangChain/LangSmith local traces
 .langchain/
 .langsmith/
+
+
+__pycache__/
+src/cost_engine/history.json
+src/cost_engine/audit_log.jsonl
